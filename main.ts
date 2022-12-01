@@ -13,12 +13,86 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         statusbar.value += -10
     }
 })
+function CreateEnemy2 (Col: number, Row: number) {
+    Enemy2 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Enemy)
+    tiles.placeOnTile(Enemy2, tiles.getTileLocation(Col, Row))
+    animation.runImageAnimation(
+    Enemy2,
+    [img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . a a a a . . . . . . 
+        . . . . . a a a a a a . . . . . 
+        . . . . a a a a a a a a . . . . 
+        . . . . a a f a a f a a . . . . 
+        . . a a a a f a a f a a a a . . 
+        . a a a a a a a a a a a a a a . 
+        . a a . a a a f f a a a . a a . 
+        . . a . a a f a a f a a . a . . 
+        . . . . a a a a a a a a . . . . 
+        . . . . a a a a a a a a . . . . 
+        . . . . . a a a a a a . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . a a a a . . . . . . 
+        . . . . . a a a a a a . . . . . 
+        . . . . a a a a a a a a . . . . 
+        . . . a a a f a a f a a a . . . 
+        . . . a a a f a a f a a a . . . 
+        . . a a a a a a a a a a a a . . 
+        . a a . a a a f f a a a . a a . 
+        . a a . a a f a a f a a . a a . 
+        . a . . a a a a a a a a . . a . 
+        . . . . a a a a a a a a . . . . 
+        . . . . . a a a a a a . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `],
+    200,
+    true
+    )
+    Enemy2.follow(mySprite, 50)
+}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (statusbar.value > 0) {
         mySprite.vy = -200
         statusbar.value += -20
     }
 })
+function Lev2 () {
+    tiles.setCurrentTilemap(tilemap`level2`)
+    CreateEnemy(39, 7)
+    CreateEnemy(39, 7)
+    CreateEnemy(25, 2)
+    CreateEnemy(15, 15)
+    CreateEnemy(36, 9)
+    CreateEnemy2(39, 7)
+    CreateEnemy2(39, 3)
+    CreateEnemy2(19, 1)
+    CreateEnemy2(31, 5)
+}
 function MoveEnemy (mySprite: Sprite) {
     forever(function(){
     if (mySprite.isHittingTile(CollisionDirection.Left) || mySprite.isHittingTile(CollisionDirection.Right) || (mySprite.isHittingTile(CollisionDirection.Top) || mySprite.isHittingTile(CollisionDirection.Bottom))) {
@@ -68,6 +142,16 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
     otherSprite.destroy()
     info.changeScoreBy(1)
 })
+function Lev1 () {
+    tiles.setCurrentTilemap(tilemap`level0`)
+    CreateEnemy(28, 5)
+    CreateEnemy(28, 5)
+    CreateEnemy(28, 4)
+    CreateEnemy(8, 5)
+    CreateEnemy(16, 2)
+    CreateEnemy(20, 16)
+    CreateEnemy(3, 2)
+}
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Build > 0) {
         if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile`)) {
@@ -160,6 +244,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 let Enemy1: Sprite = null
 let Loc: tiles.Location = null
 let projectile: Sprite = null
+let Enemy2: Sprite = null
 let mySprite2: Sprite = null
 let Build = 0
 let statusbar: StatusBarSprite = null
@@ -171,7 +256,6 @@ let Right = false
 mySprite = sprites.create(assets.image`Player`, SpriteKind.Player)
 controller.moveSprite(mySprite, 100, 0)
 scene.setBackgroundColor(12)
-tiles.setCurrentTilemap(tilemap`level0`)
 statusbar = statusbars.create(20, 4, StatusBarKind.Energy)
 statusbar.setStayInScreen(true)
 statusbar.setColor(7, 2)
@@ -181,18 +265,6 @@ Left = false
 Right = false
 info.setScore(0)
 Build = 0
-CreateEnemy(28, 5)
-CreateEnemy(28, 5)
-CreateEnemy(28, 4)
-CreateEnemy(8, 29)
-CreateEnemy(16, 2)
-CreateEnemy(20, 16)
-CreateEnemy(2, 2)
-CreateEnemy(9, 18)
-CreateEnemy(25, 4)
-CreateEnemy(1, 1)
-CreateEnemy(15, 19)
-CreateEnemy(6, 23)
 for (let index = 0; index < 2; index++) {
     mySprite2 = sprites.create(img`
         . . b b b b b b b b b b b b . . 
@@ -214,6 +286,7 @@ for (let index = 0; index < 2; index++) {
         `, SpriteKind.Food)
     tiles.placeOnRandomTile(mySprite2, assets.tile`transparency16`)
 }
+Lev2()
 game.onUpdateInterval(30, function () {
     mySprite.vy += 5
 })
