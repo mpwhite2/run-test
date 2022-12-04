@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const Blocker = SpriteKind.create()
     export const Boss = SpriteKind.create()
+    export const Fire = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.over(false)
@@ -95,6 +96,10 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         statusbar.value += -20
     }
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fire, function (sprite, otherSprite) {
+    sprite.destroy()
+    otherSprite.destroy()
+})
 controller.anyButton.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(mySprite, 100, 0)
 })
@@ -113,6 +118,9 @@ function Lev2 () {
     CreateEnemy2(31, 5)
     doSomething()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Fire, function (sprite, otherSprite) {
+    game.over(false)
+})
 function MoveEnemy (mySprite: Sprite) {
     forever(function(){
     if (mySprite.isHittingTile(CollisionDirection.Left) || mySprite.isHittingTile(CollisionDirection.Right) || (mySprite.isHittingTile(CollisionDirection.Top) || mySprite.isHittingTile(CollisionDirection.Bottom))) {
@@ -177,6 +185,12 @@ function Lev3 () {
     CreateEnemy(20, 13)
     doSomething()
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Boss, function (sprite, otherSprite) {
+    BossHealth += -1
+    sprite.destroy()
+    otherSprite.startEffect(effects.ashes, 250)
+    info.changeScoreBy(1)
+})
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
     sprite.destroy(effects.ashes, 500)
     otherSprite.destroy()
@@ -232,6 +246,9 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         mySprite.y += -16
         Build += -1
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
+    game.over(true)
 })
 function CreateEnemy3 (Col: number, Row: number) {
     Enemy3 = sprites.create(img`
@@ -566,6 +583,7 @@ function CreateEnemy3 (Col: number, Row: number) {
     )
     Enemy3.follow(mySprite, 40)
     Enemy3.setFlag(SpriteFlag.GhostThroughWalls, true)
+    tiles.placeOnTile(Enemy3, tiles.getTileLocation(Col, Row))
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     tiles.placeOnRandomTile(otherSprite, assets.tile`transparency16`)
@@ -666,6 +684,10 @@ function CreateEnemy (Col: number, Row: number) {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     game.over(false)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss, function (sprite, otherSprite) {
+    game.over(false)
+})
+let projectile2: Sprite = null
 let Enemy1: Sprite = null
 let Enemy3: Sprite = null
 let Loc: tiles.Location = null
@@ -693,6 +715,7 @@ Build = 0
 Level = 0
 mySprite.setVelocity(0, 0)
 Lev4()
+let BossHealth = 10
 game.onUpdateInterval(30, function () {
     mySprite.vy += 5
 })
@@ -977,5 +1000,37 @@ forever(function () {
     if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.MovingLeft))) {
         Left = true
         Right = false
+    }
+})
+forever(function () {
+    if (BossHealth == 0) {
+        sprites.destroyAllSpritesOfKind(SpriteKind.Boss, effects.fire, 500)
+    }
+})
+game.onUpdateInterval(500, function () {
+    if (Level == 4 && BossHealth > 0) {
+        projectile2 = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 4 4 4 4 4 . . . . . . 
+            . . . 4 4 4 5 5 5 d 4 4 4 4 . . 
+            . . 4 d 5 d 5 5 5 d d d 4 4 . . 
+            . . 4 5 5 1 1 1 d d 5 5 5 4 . . 
+            . 4 5 5 5 1 1 1 5 1 1 5 5 4 4 . 
+            . 4 d d 1 1 5 5 5 1 1 5 5 d 4 . 
+            . 4 5 5 1 1 5 1 1 5 5 d d d 4 . 
+            . 2 5 5 5 d 1 1 1 5 1 1 5 5 2 . 
+            . 2 d 5 5 d 1 1 1 5 1 1 5 5 2 . 
+            . . 2 4 d d 5 5 5 5 d d 5 4 . . 
+            . . . 2 2 4 d 5 5 d d 4 4 . . . 
+            . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
+            . . . 2 2 4 4 4 4 4 4 2 2 . . . 
+            . . . . . 2 2 2 2 2 2 . . . . . 
+            `, Enemy3, 50, 50)
+        projectile2.setKind(SpriteKind.Fire)
+        projectile2.follow(mySprite, 50)
+        timer.after(2000, function () {
+            projectile2.destroy()
+        })
     }
 })
