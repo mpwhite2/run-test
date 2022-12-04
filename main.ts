@@ -2,9 +2,14 @@ namespace SpriteKind {
     export const Blocker = SpriteKind.create()
     export const Boss = SpriteKind.create()
     export const Fire = SpriteKind.create()
+    export const Bomb = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.over(false)
+})
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Bomb, function (sprite, otherSprite) {
+    sprite.destroy()
+    info.changeScoreBy(1)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
     music.jumpUp.play()
@@ -91,10 +96,164 @@ function CreateEnemy2 (Col: number, Row: number) {
     Enemy2.follow(mySprite, 50)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (statusbar.value > 0 && characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.HittingWallDown))) {
-        mySprite.vy = -200
-        statusbar.value += -20
-    }
+    Bomb = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . d . . . . . 
+        . . . . . . . . . d . 4 . . . . 
+        . . . . . . . . d . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Bomb)
+    Bomb.setFlag(SpriteFlag.Ghost, true)
+    Bomb.setPosition(mySprite.x, mySprite.y)
+    Bomb.startEffect(effects.fire)
+    animation.runImageAnimation(
+    Bomb,
+    [img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . d . . . . . 
+        . . . . . . . . . d . 2 . . . . 
+        . . . . . . . . d . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . 2 . . . . . 
+        . . . . . . . . . d . . . . . . 
+        . . . . . . . . d . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . 2 . . . . . . 
+        . . . . . . . . d . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . 2 . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . f f f f f f f f . . . . 
+        . . . . . f f f f f f . . . . . 
+        . . . . . . f f f f . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . 2 2 . . . . . . . 
+        . . . . . . 2 2 2 2 . . . . . . 
+        . . . . . 2 2 2 2 2 2 . . . . . 
+        . . . . 2 2 2 2 2 2 2 2 . . . . 
+        . . . . 2 2 2 2 2 2 2 2 . . . . 
+        . . . . . 2 2 2 2 2 2 . . . . . 
+        . . . . . . 2 2 2 2 . . . . . . 
+        . . . . . . . 2 2 . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `],
+    500,
+    false
+    )
+    pause(3000)
+    Bomb.setFlag(SpriteFlag.Ghost, false)
+    Bomb.setImage(img`
+        ............222222222222222.............
+        ...........222222222222222222...........
+        ..........222222222222222222222.........
+        .......22222222222222f2222222222........
+        .....2222222222222222222222222222.......
+        ....222222222222222222222222222222......
+        ...2222222422222222222222224222222......
+        ..222222222222222222222222222222222.....
+        ..2222222222222222222222222222222222....
+        .2222222222222f222222222222222222222....
+        .22222222222222222222222222222225222222.
+        .2222222f222222222222222522222222222222.
+        22222222222222222222222222f222222222222.
+        222222222222222222242222222222222222222.
+        222222222222222222222222222222222222222.
+        222222222222522222222222222222222222222.
+        222222222222222222222222222222222222222.
+        222422222222222222222222222222222222222.
+        222222222222222f2222222222f222222222222.
+        222222222222222222224222222222222422222.
+        222222f22222222222222222222222222222222.
+        222222222222222222222222222222222222222.
+        222222222222224222222222222222222222222.
+        22222222222222222222222222222222222222..
+        222222222222222222222222222222222f2222..
+        22222222222222222222f22222222222222222..
+        22222252222222222222222222222222222222..
+        22222222222222222222222222222222222222..
+        2222222222222f222222222222252222222222..
+        .2222222222222222222222222222222222222..
+        .22222222222222222222222222222222222....
+        ..2222222222222222222222222f22222222....
+        ..2222222222222222222222222222222222....
+        ..2222222222222222222222222222222222....
+        ...222222222222f22222222222222222222....
+        ....22222222222222222222222222222222....
+        .....222222222222222225222222222222.....
+        ........2222222222222222222252222.......
+        ...........222222522222222222222........
+        .............222222222222222222.........
+        `)
+    pause(1000)
+    Bomb.destroy()
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fire, function (sprite, otherSprite) {
     sprite.destroy()
@@ -196,6 +355,11 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
     otherSprite.destroy()
     info.changeScoreBy(1)
 })
+sprites.onOverlap(SpriteKind.Bomb, SpriteKind.Boss, function (sprite, otherSprite) {
+    BossHealth += -8
+    info.changeScoreBy(8)
+    pause(1000)
+})
 function Lev1 () {
     Level = 1
     tiles.setCurrentTilemap(tilemap`level1`)
@@ -235,8 +399,11 @@ function doSomething () {
         tiles.placeOnRandomTile(mySprite2, assets.tile`transparency16`)
     }
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Bomb, function (sprite, otherSprite) {
+    game.over(false)
+})
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Build > 0) {
+    if (Build > 3) {
         if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile`)) {
             game.over(false)
         }
@@ -244,7 +411,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         tiles.setTileAt(Loc, assets.tile`myTile`)
         tiles.setWallAt(Loc, true)
         mySprite.y += -16
-        Build += -1
+        Build += -3
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
@@ -611,12 +778,15 @@ function Lev4 () {
     CreateEnemy(45, 3)
     CreateEnemy(21, 11)
     CreateEnemy(1, 13)
+    CreateEnemy(8, 14)
+    CreateEnemy(49, 10)
     CreateEnemy2(54, 14)
     CreateEnemy2(57, 8)
     CreateEnemy2(30, 14)
     CreateEnemy2(56, 9)
     CreateEnemy2(21, 3)
     CreateEnemy2(49, 1)
+    doSomething()
 }
 function CreateEnemy (Col: number, Row: number) {
     Enemy1 = sprites.create(img`
@@ -693,6 +863,7 @@ let Enemy3: Sprite = null
 let Loc: tiles.Location = null
 let mySprite2: Sprite = null
 let projectile: Sprite = null
+let Bomb: Sprite = null
 let Enemy2: Sprite = null
 let Level = 0
 let Build = 0
@@ -715,7 +886,7 @@ Build = 0
 Level = 0
 mySprite.setVelocity(0, 0)
 Lev4()
-let BossHealth = 10
+let BossHealth = 20
 game.onUpdateInterval(30, function () {
     mySprite.vy += 5
 })
@@ -1029,8 +1200,6 @@ game.onUpdateInterval(500, function () {
             `, Enemy3, 50, 50)
         projectile2.setKind(SpriteKind.Fire)
         projectile2.follow(mySprite, 50)
-        timer.after(2000, function () {
-            projectile2.destroy()
-        })
+        projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
     }
 })
