@@ -29,7 +29,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.HittingWallDown)) && statusbar.value > 0) {
-        mySprite.vy = -130
+        mySprite.vy = -150
         statusbar.value += -10
     }
 })
@@ -205,10 +205,10 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `],
-    500,
+    200,
     false
     )
-    pause(3000)
+    pause(1000)
     Bomb.setFlag(SpriteFlag.Ghost, false)
     Bomb.setImage(img`
         ............222222222222222.............
@@ -356,9 +356,9 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Bomb, SpriteKind.Boss, function (sprite, otherSprite) {
-    BossHealth += -8
+    BossHealth += -10
     info.changeScoreBy(8)
-    pause(1000)
+    pause(100)
 })
 function Lev1 () {
     Level = 1
@@ -403,7 +403,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Bomb, function (sprite, otherSpr
     game.over(false)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Build > 3) {
+    if (Build > 1.5) {
         if (mySprite.tileKindAt(TileDirection.Top, assets.tile`myTile`)) {
             game.over(false)
         }
@@ -411,7 +411,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         tiles.setTileAt(Loc, assets.tile`myTile`)
         tiles.setWallAt(Loc, true)
         mySprite.y += -16
-        Build += -3
+        Build += -1.5
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
@@ -748,7 +748,7 @@ function CreateEnemy3 (Col: number, Row: number) {
     50,
     characterAnimations.rule(Predicate.MovingRight)
     )
-    Enemy3.follow(mySprite, 40)
+    Enemy3.follow(mySprite, 20)
     Enemy3.setFlag(SpriteFlag.GhostThroughWalls, true)
     tiles.placeOnTile(Enemy3, tiles.getTileLocation(Col, Row))
 }
