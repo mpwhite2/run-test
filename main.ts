@@ -21,10 +21,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
         Lev2()
     } else if (Level == 2) {
         Lev3()
-    } else {
-        if (Level == 3) {
-            game.over(true)
-        }
+    } else if (Level == 3) {
+        Lev4()
     }
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -96,7 +94,7 @@ function CreateEnemy2 (Col: number, Row: number) {
     Enemy2.follow(mySprite, 50)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    Bomb = sprites.create(img`
+    Bomb2 = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . d . . . . . 
         . . . . . . . . . d . 4 . . . . 
@@ -114,11 +112,11 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Bomb)
-    Bomb.setFlag(SpriteFlag.Ghost, true)
-    Bomb.setPosition(mySprite.x, mySprite.y)
-    Bomb.startEffect(effects.fire)
+    Bomb2.setFlag(SpriteFlag.Ghost, true)
+    Bomb2.setPosition(mySprite.x, mySprite.y)
+    Bomb2.startEffect(effects.fire)
     animation.runImageAnimation(
-    Bomb,
+    Bomb2,
     [img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . d . . . . . 
@@ -209,8 +207,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     false
     )
     pause(1000)
-    Bomb.setFlag(SpriteFlag.Ghost, false)
-    Bomb.setImage(img`
+    Bomb2.setFlag(SpriteFlag.Ghost, false)
+    Bomb2.setImage(img`
         ............222222222222222.............
         ...........222222222222222222...........
         ..........222222222222222222222.........
@@ -252,8 +250,32 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         ...........222222522222222222222........
         .............222222222222222222.........
         `)
+    Bomb2.x += -12
+    Bomb2.y += -12
+    for (let index = 0; index < 10; index++) {
+        projectile3 = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . 4 . . . . . 
+            . . . . 2 . . . . 4 4 . . . . . 
+            . . . . 2 4 . . 4 5 4 . . . . . 
+            . . . . . 2 4 d 5 5 4 . . . . . 
+            . . . . . 2 5 5 5 5 4 . . . . . 
+            . . . . . . 2 5 5 5 5 4 . . . . 
+            . . . . . . 2 5 4 2 4 4 . . . . 
+            . . . . . . 4 4 . . 2 4 4 . . . 
+            . . . . . 4 4 . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Bomb2, randint(-200, 200), randint(-200, 200))
+        projectile3.setKind(SpriteKind.Bomb)
+    }
     pause(1000)
-    Bomb.destroy()
+    Bomb2.destroy()
+    sprites.destroyAllSpritesOfKind(SpriteKind.Bomb)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fire, function (sprite, otherSprite) {
     sprite.destroy()
@@ -863,15 +885,16 @@ let Enemy3: Sprite = null
 let Loc: tiles.Location = null
 let mySprite2: Sprite = null
 let projectile: Sprite = null
-let Bomb: Sprite = null
+let projectile3: Sprite = null
+let Bomb2: Sprite = null
 let Enemy2: Sprite = null
 let Level = 0
 let Build = 0
 let statusbar: StatusBarSprite = null
-let Right = false
-let Left = false
-let OldX = 0
 let mySprite: Sprite = null
+let OldX = 0
+let Left = false
+let Right = false
 mySprite = sprites.create(assets.image`Player`, SpriteKind.Player)
 scene.setBackgroundColor(12)
 statusbar = statusbars.create(20, 4, StatusBarKind.Energy)
@@ -885,8 +908,8 @@ info.setScore(0)
 Build = 0
 Level = 0
 mySprite.setVelocity(0, 0)
-Lev4()
 let BossHealth = 20
+Lev1()
 game.onUpdateInterval(30, function () {
     mySprite.vy += 5
 })
