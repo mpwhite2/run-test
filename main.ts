@@ -788,6 +788,7 @@ scene.onHitWall(SpriteKind.Projectile, function (sprite, location) {
 function Lev4 () {
     Level = 4
     tiles.setCurrentTilemap(tilemap`level0`)
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(4, 3))
     CreateEnemy3(57, 14)
     CreateEnemy(57, 8)
     CreateEnemy(57, 14)
