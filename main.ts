@@ -1198,7 +1198,7 @@ forever(function () {
     }
 })
 forever(function () {
-    if (BossHealth == 0) {
+    if (BossHealth < 1) {
         sprites.destroyAllSpritesOfKind(SpriteKind.Boss, effects.fire, 500)
     }
 })
