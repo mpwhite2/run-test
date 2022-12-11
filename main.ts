@@ -252,6 +252,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         `)
     Bomb2.x += -12
     Bomb2.y += -12
+    music.bigCrash.play()
     for (let index = 0; index < 10; index++) {
         projectile3 = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
