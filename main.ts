@@ -273,6 +273,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             `, Bomb2, randint(-200, 200), randint(-200, 200))
         projectile3.setKind(SpriteKind.Bomb)
+        projectile3.setFlag(SpriteFlag.AutoDestroy, false)
     }
     pause(1000)
     Bomb2.destroy()
@@ -280,7 +281,6 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fire, function (sprite, otherSprite) {
     sprite.destroy()
-    otherSprite.destroy()
 })
 controller.anyButton.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(mySprite, 100, 0)
@@ -379,9 +379,10 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Bomb, SpriteKind.Boss, function (sprite, otherSprite) {
-    BossHealth += -10
+    BossHealth += -8
     info.changeScoreBy(8)
-    pause(100)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Bomb)
+    pause(1000)
 })
 function Lev1 () {
     Level = 1
