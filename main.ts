@@ -772,7 +772,7 @@ function CreateEnemy3 (Col: number, Row: number) {
     50,
     characterAnimations.rule(Predicate.MovingRight)
     )
-    Enemy3.follow(mySprite, 20)
+    Enemy3.follow(mySprite, 20,200)
     Enemy3.setFlag(SpriteFlag.GhostThroughWalls, true)
     tiles.placeOnTile(Enemy3, tiles.getTileLocation(Col, Row))
 }
@@ -912,6 +912,7 @@ Build = 0
 Level = 0
 mySprite.setVelocity(0, 0)
 let BossHealth = 20
+//Select Level//** 
 Lev1()
 game.onUpdateInterval(30, function () {
     mySprite.vy += 5
