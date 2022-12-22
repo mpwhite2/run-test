@@ -113,6 +113,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Bomb)
     Bomb2.setFlag(SpriteFlag.Ghost, true)
+    Bomb2.setFlag(SpriteFlag.GhostThroughTiles,true)
     Bomb2.setPosition(mySprite.x, mySprite.y)
     Bomb2.startEffect(effects.fire)
     animation.runImageAnimation(
@@ -1229,4 +1230,9 @@ game.onUpdateInterval(500, function () {
         projectile2.follow(mySprite, 50)
         projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
     }
+})
+scene.onOverlapTile(SpriteKind.Bomb, assets.tile`myTile`, function(sprite: Sprite, location: tiles.Location) {
+sprite.destroy()
+tiles.setTileAt(location,assets.tile`transparency16`)
+Build += 1    
 })
