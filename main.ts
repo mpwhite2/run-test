@@ -3,6 +3,7 @@ namespace SpriteKind {
     export const Boss = SpriteKind.create()
     export const Fire = SpriteKind.create()
     export const Bomb = SpriteKind.create()
+    export const goodie = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.over(false)
@@ -30,6 +31,15 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         mySprite.vy = -150
         statusbar.value += -10
     }
+})
+function popGems(){
+    let jewel = sprites.create(assets.image`Gem`,SpriteKind.goodie)
+    tiles.placeOnRandomTile(jewel, assets.tile`transparency16`)
+}
+sprites.onOverlap(SpriteKind.Player, SpriteKind.goodie, function(sprite: Sprite, otherSprite: Sprite) {
+otherSprite.destroy()
+info.changeScoreBy(15) 
+popGems()   
 })
 function CreateEnemy2 (Col: number, Row: number) {
     Enemy2 = sprites.create(img`
@@ -367,6 +377,7 @@ function Lev3 () {
     CreateEnemy(20, 12)
     CreateEnemy(20, 13)
     doSomething()
+    popGems()
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Boss, function (sprite, otherSprite) {
     BossHealth += -1
@@ -380,7 +391,7 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Bomb, SpriteKind.Boss, function (sprite, otherSprite) {
-    BossHealth += -8
+    BossHealth += -4
     info.changeScoreBy(8)
     sprites.destroyAllSpritesOfKind(SpriteKind.Bomb)
     pause(1000)
@@ -812,7 +823,14 @@ function Lev4 () {
     CreateEnemy2(56, 9)
     CreateEnemy2(21, 3)
     CreateEnemy2(49, 1)
+    CreateEnemy(12,10)
+    CreateEnemy(42,16)
+    CreateEnemy(6,6)
+    CreateEnemy(12,14)
+    CreateEnemy(12,13)
     doSomething()
+    popGems()
+    popGems()
 }
 function CreateEnemy (Col: number, Row: number) {
     Enemy1 = sprites.create(img`
@@ -910,9 +928,9 @@ Left = false
 Right = false
 info.setScore(0)
 Build = 0
-Level = 0
+Level = 1
 mySprite.setVelocity(0, 0)
-let BossHealth = 20
+let BossHealth = 40
 //Select Level//** 
 Lev1()
 game.onUpdateInterval(30, function () {
