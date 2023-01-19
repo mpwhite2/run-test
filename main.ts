@@ -126,8 +126,11 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     Bomb2.setFlag(SpriteFlag.GhostThroughTiles,true)
     Bomb2.setPosition(mySprite.x, mySprite.y)
     Bomb2.startEffect(effects.fire)
+    blow(Bomb2)
+})
+    function blow(sprite:Sprite){
     animation.runImageAnimation(
-    Bomb2,
+    sprite,
     [img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . d . . . . . 
@@ -215,11 +218,11 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `],
     200,
-    false
+    true
     )
     pause(1000)
-    Bomb2.setFlag(SpriteFlag.Ghost, false)
-    Bomb2.setImage(img`
+    sprite.setFlag(SpriteFlag.Ghost, false)
+    sprite.setImage(img`
         ............222222222222222.............
         ...........222222222222222222...........
         ..........222222222222222222222.........
@@ -261,8 +264,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         ...........222222522222222222222........
         .............222222222222222222.........
         `)
-    Bomb2.x += -12
-    Bomb2.y += -12
+    sprite.x += -12
+    sprite.y += -12
     music.bigCrash.play()
     for (let index = 0; index < 10; index++) {
         projectile3 = sprites.createProjectileFromSprite(img`
@@ -282,14 +285,14 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, Bomb2, randint(-200, 200), randint(-200, 200))
+            `, sprite, randint(-200, 200), randint(-200, 200))
         projectile3.setKind(SpriteKind.Bomb)
         projectile3.setFlag(SpriteFlag.AutoDestroy, false)
     }
     pause(1000)
-    Bomb2.destroy()
+    sprite.destroy()
     sprites.destroyAllSpritesOfKind(SpriteKind.Bomb)
-})
+    }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fire, function (sprite, otherSprite) {
     sprite.destroy()
 })
@@ -306,9 +309,13 @@ function Lev2 () {
     CreateEnemy(15, 15)
     CreateEnemy(36, 9)
     CreateEnemy2(39, 7)
-    CreateEnemy2(39, 3)
+    CreateEnemy2(28, 3)
     CreateEnemy2(19, 1)
     CreateEnemy2(31, 5)
+    CreateEnemy(20,15)
+    CreateEnemy(10,3)
+    CreateEnemy(35,4)
+    popGems()
     doSomething()
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Fire, function (sprite, otherSprite) {
@@ -784,7 +791,7 @@ function CreateEnemy3 (Col: number, Row: number) {
     50,
     characterAnimations.rule(Predicate.MovingRight)
     )
-    Enemy3.follow(mySprite, 20,200)
+    Enemy3.follow(mySprite, 15,200)
     Enemy3.setFlag(SpriteFlag.GhostThroughWalls, true)
     tiles.placeOnTile(Enemy3, tiles.getTileLocation(Col, Row))
 }
