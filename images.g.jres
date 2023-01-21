@@ -9,6 +9,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "Gem"
     },
+    "image2": {
+        "data": "hwQeAB4AAAAAAAAAICIiQiIiAAAAAAAAAAAAICIiIiIiIiIAAAAAAAAAACIiIiIiIiIiAgAAAAAAACAiIiIiIiIiIiIAAAAAAAAiIiIiIiQiIiIiAgAAAAAgIiIiIiIiIiIiIiIAAAAgIiIiIiIiIiIi8iIiAgAAIiIvIvIkIiIvIiIiIiIAACIiIiIiIiIiIiIiIiIiAAAiIiIiIiIiIiIiIiQiIgAAIiIiIiIiIiIiIiIiIiICACIvQiLyIiIiIiIiIiIiAgAiIiIiIiJCIiIiIiIiIgIAIiIiIiIkIiIi8iIiIiICAPIiIiQiIiIvIiIiJCIiAgAiIiIiIkIiIiIiIiIvIgIAIiIiIiIiIiIiIiIiIiICACIiIiIiIiIiIiIiIiIiAgAiIvIiIiIiIvIiIiIiIgIAICIiIkIiIiIi8iIiIiIAAAAiIiJCIiIiIiIiIiIiAAAAIiIiIiIiIiIiIiIiAgAAACDyIiIiLyIkIiQiIgIAAAAAIiIiIiIiIiIiIiIAAAAAACAiIiIiIiIiIiICAAAAAAAAIiIiIiIiIiIiAAAAAAAAAAAi8iIkIiIiAgAAAAAAAAAAIiIiIiIiAgAAAAAAAAAAAAAiIiIiIgIAAAAAAAAAAAAAAAAgIgIAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Boom"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

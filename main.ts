@@ -4,7 +4,9 @@ namespace SpriteKind {
     export const Fire = SpriteKind.create()
     export const Bomb = SpriteKind.create()
     export const goodie = SpriteKind.create()
+    export const ghost = SpriteKind.create()
 }
+let thingsToBlow:Sprite[]=[]
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.over(false)
 })
@@ -104,6 +106,10 @@ function CreateEnemy2 (Col: number, Row: number) {
     Enemy2.follow(mySprite, 50)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (controller.A.isPressed()&&thingsToBlow.length >0){
+        blow(thingsToBlow.pop())
+    }
+    else{
     Bomb2 = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . d . . . . . 
@@ -122,106 +128,16 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Bomb)
-    Bomb2.setFlag(SpriteFlag.Ghost, true)
+    Bomb2.setKind(SpriteKind.ghost)
     Bomb2.setFlag(SpriteFlag.GhostThroughTiles,true)
     Bomb2.setPosition(mySprite.x, mySprite.y)
     Bomb2.startEffect(effects.fire)
-    blow(Bomb2)
+    thingsToBlow.push(Bomb2)
+    }
 })
     function blow(sprite:Sprite){
-    animation.runImageAnimation(
-    sprite,
-    [img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . d . . . . . 
-        . . . . . . . . . d . 2 . . . . 
-        . . . . . . . . d . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `,img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . 2 . . . . . 
-        . . . . . . . . . d . . . . . . 
-        . . . . . . . . d . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `,img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . 2 . . . . . . 
-        . . . . . . . . d . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `,img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . 2 . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . . f f f f f f . . . . . 
-        . . . . . . f f f f . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `,img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . 2 2 . . . . . . . 
-        . . . . . . 2 2 2 2 . . . . . . 
-        . . . . . 2 2 2 2 2 2 . . . . . 
-        . . . . 2 2 2 2 2 2 2 2 . . . . 
-        . . . . 2 2 2 2 2 2 2 2 . . . . 
-        . . . . . 2 2 2 2 2 2 . . . . . 
-        . . . . . . 2 2 2 2 . . . . . . 
-        . . . . . . . 2 2 . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `],
-    200,
-    true
-    )
-    pause(1000)
-    sprite.setFlag(SpriteFlag.Ghost, false)
+    sprite.setImage(assets.image`Boom`)
+    sprite.setKind(SpriteKind.Bomb)
     sprite.setImage(img`
         ............222222222222222.............
         ...........222222222222222222...........
@@ -264,8 +180,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         ...........222222522222222222222........
         .............222222222222222222.........
         `)
-    sprite.x += -12
-    sprite.y += -12
+    sprite.x += -15
+    sprite.y += -15
     music.bigCrash.play()
     for (let index = 0; index < 10; index++) {
         projectile3 = sprites.createProjectileFromSprite(img`
@@ -507,30 +423,30 @@ function CreateEnemy3 (Col: number, Row: number) {
         ...cccccccbdddbccc......
         ........cd555ddc........
         `,img`
-        ........................
-        ........................
-        ..........222...........
-        .........2222...........
-        .....ccc2222..222.......
-        ...cc555555222222.......
-        ..c5555555555b22........
-        .c555555555555b..22.....
-        c555551ff555555b222.....
-        c55d55ff55555555b2......
-        c5555555555555555b......
-        .cbb31bb5555dd555b.22...
-        .c5333b555ddddd55d222...
-        .c533b55ddddddddddb.....
-        .c5555dddbb55bddddd222..
-        ..ccccbbbb555bddddd222..
-        ...cdcbc5555bddddddcc...
-        ....ccbc55bc5ddddddbcccc
-        .....cbbcc5555dddddddddc
-        .....ccbbb555ddbddddddc.
-        .....cdcbc55ddbbbdddcc..
-        ...ccdddccddddbcbbcc....
-        ...ccccccd555ddccc......
-        ........cccccccc........
+            ........................
+            ........................
+            ..........222...........
+            .........2222...........
+            .....ccc2222..222.......
+            ...cc555555222222.......
+            ..c5555555555b22........
+            .c555555555555b..22.....
+            c555551ff555555b222.....
+            c55d55ff55555555b2......
+            c5555555555555555b......
+            .cbb31bb5555dd555b.22...
+            .c5333b555ddddd55d222...
+            .c533b55ddddddddddb.....
+            .c5555dddbb55bddddd222..
+            ..ccccbbbb555bddddd222..
+            ...cdcbc5555bddddddcc...
+            ....ccbc55bc5ddddddbcccc
+            .....cbbcc5555dddddddddc
+            .....ccbbb555ddbddddddc.
+            .....cdcbc55ddbbbdddcc..
+            ...ccdddccddddbcbbcc....
+            ...ccccccd555ddccc......
+            ........cccccccc........
         `,img`
         ........................
         ..........22............
@@ -1260,4 +1176,7 @@ scene.onOverlapTile(SpriteKind.Bomb, assets.tile`myTile`, function(sprite: Sprit
 sprite.destroy()
 tiles.setTileAt(location,assets.tile`transparency16`)
 Build += 1    
+})
+sprites.onOverlap(SpriteKind.ghost, SpriteKind.Bomb, function(sprite: Sprite, otherSprite: Sprite) {
+    blow(sprite)    
 })
