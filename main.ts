@@ -6,6 +6,7 @@ namespace SpriteKind {
     export const goodie = SpriteKind.create()
     export const ghost = SpriteKind.create()
 }
+game.showLongText("controls: up arrow = jump down arrow = build left/right arrows = move left/right space = fire bow and arrow return = set bomb space + return = detonate last bomb ", DialogLayout.Bottom)
 let thingsToBlow:Sprite[]=[]
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.over(false)
