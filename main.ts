@@ -41,8 +41,7 @@ function popGems(){
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.goodie, function(sprite: Sprite, otherSprite: Sprite) {
 otherSprite.destroy()
-info.changeScoreBy(15) 
-popGems()   
+info.changeScoreBy(15)    
 })
 function CreateEnemy2 (Col: number, Row: number) {
     Enemy2 = sprites.create(img`
@@ -316,7 +315,7 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
 })
 sprites.onOverlap(SpriteKind.Bomb, SpriteKind.Boss, function (sprite, otherSprite) {
     BossHealth += -4
-    info.changeScoreBy(8)
+    info.changeScoreBy(4)
     sprites.destroyAllSpritesOfKind(SpriteKind.Bomb)
     pause(1000)
 })
@@ -330,6 +329,8 @@ function Lev1 () {
     CreateEnemy(16, 2)
     CreateEnemy(20, 16)
     CreateEnemy(3, 2)
+    CreateEnemy(16,7)
+    CreateEnemy(5,12)
     doSomething()
 }
 scene.onHitWall(SpriteKind.Boss, function (sprite, location) {
@@ -752,6 +753,9 @@ function Lev4 () {
     CreateEnemy(6,6)
     CreateEnemy(12,14)
     CreateEnemy(12,13)
+    CreateEnemy(47,14)
+    CreateEnemy(6,13)
+    CreateEnemy(45,12)
     doSomething()
     popGems()
     popGems()

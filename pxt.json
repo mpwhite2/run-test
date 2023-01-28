@@ -1,5 +1,5 @@
 {
-    "name": "run test",
+    "name": "run test 2",
     "description": "",
     "dependencies": {
         "device": "*",
@@ -24,7 +24,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.11.37",
+        "target": "1.12.17",
         "targetId": "arcade"
     },
     "supportedTargets": [
