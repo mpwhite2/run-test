@@ -6,6 +6,9 @@ namespace SpriteKind {
     export const goodie = SpriteKind.create()
     export const ghost = SpriteKind.create()
 }
+let headline = sprites.create(assets.image`Text1`, SpriteKind.Player)
+controller.pauseUntilAnyButtonIsPressed()
+headline.destroy()
 game.showLongText("controls: up arrow = jump down arrow = build left/right arrows = move left/right space = fire bow and arrow return = set bomb space + return = detonate last bomb ", DialogLayout.Bottom)
 let thingsToBlow:Sprite[]=[]
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
@@ -183,7 +186,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     sprite.x += -15
     sprite.y += -15
     music.bigCrash.play()
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 5; index++) {
         projectile3 = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
