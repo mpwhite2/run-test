@@ -5,6 +5,7 @@ namespace SpriteKind {
     export const Bomb = SpriteKind.create()
     export const goodie = SpriteKind.create()
     export const ghost = SpriteKind.create()
+    export const orb = SpriteKind.create()
 }
 let headline = sprites.create(assets.image`Text1`, SpriteKind.Player)
 controller.pauseUntilAnyButtonIsPressed()
@@ -379,7 +380,9 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
+    if(ballHealth == 0){
     game.over(true)
+    }
 })
 function CreateEnemy3 (Col: number, Row: number) {
     Enemy3 = sprites.create(img`
@@ -727,6 +730,7 @@ scene.onHitWall(SpriteKind.Projectile, function (sprite, location) {
     sprite.destroy()
     Build += 1
 })
+let spawner:Sprite = null
 function Lev4 () {
     Level = 4
     tiles.setCurrentTilemap(tilemap`level0`)
@@ -762,6 +766,8 @@ function Lev4 () {
     doSomething()
     popGems()
     popGems()
+    spawner = sprites.create(assets.image`Spawner`,SpriteKind.orb)
+    tiles.placeOnTile(spawner,tiles.getTileLocation(39,7))
 }
 function CreateEnemy (Col: number, Row: number) {
     Enemy1 = sprites.create(img`
@@ -848,6 +854,8 @@ let mySprite: Sprite = null
 let OldX = 0
 let Left = false
 let Right = false
+let ballHealth = 3
+let enemyRate = 5000
 mySprite = sprites.create(assets.image`Player`, SpriteKind.Player)
 scene.setBackgroundColor(12)
 statusbar = statusbars.create(20, 4, StatusBarKind.Energy)
@@ -1187,4 +1195,45 @@ Build += 1
 })
 sprites.onOverlap(SpriteKind.ghost, SpriteKind.Bomb, function(sprite: Sprite, otherSprite: Sprite) {
     blow(sprite)    
+})
+game.onUpdateInterval(enemyRate, function() {
+    if( Level == 4 &&ballHealth>0){
+    if (Math.percentChance(70)){
+        CreateEnemy(spawner.x/16,spawner.y/16)
+    }
+    else{
+        CreateEnemy2(spawner.x/16,spawner.y/16)
+    }
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.orb, function(sprite: Sprite, otherSprite: Sprite) {
+game.over(false)    
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.orb, function(sprite: Sprite, otherSprite: Sprite) {
+sprite.destroy()
+enemyRate += - 1500
+if (ballHealth ==3){
+otherSprite.setVelocity(randint(-50,50),randint(-50,50))
+otherSprite.setBounceOnWall(true)
+ballHealth -= 1
+
+}
+else{
+    if(ballHealth == 2){
+        otherSprite.setVelocity(randint(-50,50),randint(-50,50))
+        enemyRate = 1000
+        ballHealth -= 1        
+    }
+    else{
+        enemyRate = 1
+        pause(7)
+        CreateEnemy3(spawner.x/16,spawner.y/16)
+        spawner.destroy()
+        info.changeScoreBy(60)
+        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.InBackground)
+    }
+}
+
+info.changeScoreBy(40)
+pause(2000)    
 })
