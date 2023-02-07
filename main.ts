@@ -1225,8 +1225,10 @@ else{
         ballHealth -= 1        
     }
     else{
+        ballHealth = 0
         enemyRate = 1
         pause(7)
+        BossHealth = 40
         CreateEnemy3(spawner.x/16,spawner.y/16)
         spawner.destroy()
         info.changeScoreBy(60)
